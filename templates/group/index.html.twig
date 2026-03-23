@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{% block title %}Group Randomizer{% endblock %}
+{% block body %}
+<main class="container">
+    <h1>Group Randomizer</h1>
+    <form method="post" action="{{ path('app_group') }}" class="form">
+        <label for="players" class="form__label">Player names (one per line)</label>
+        <textarea id="players" name="players" class="form__textarea" rows="10"
+            placeholder="Alice&#10;Bob&#10;Charlie">{{ rawInput }}</textarea>
+        <button type="submit" class="form__submit">Randomize</button>
+    </form>
+    {% if groups is not empty %}
+    <section class="results">
+        <h2>Groups</h2>
+        <div class="groups">
+            {% for group in groups %}
+            <div class="group">
+                <h3 class="group__title">Group {{ loop.index }}</h3>
+                <ul class="group__list">
+                    {% for player in group %}<li class="group__player">{{ player }}</li>{% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+</main>
+{% endblock %}
