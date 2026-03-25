@@ -1,133 +1,28 @@
 {% extends 'base.html.twig' %}
-{% block title %}Commander Pods Randomizer{% endblock %}
+{% block title %}Group Randomizer{% endblock %}
 {% block body %}
 <main class="container">
-    <h1>Commander Pods Randomizer</h1>
-    {% if errors is not empty %}
-    <ul class="form-errors" aria-live="polite" aria-atomic="true">
-        {% for error in errors %}<li>{{ error }}</li>{% endfor %}
-    </ul>
-    {% endif %}
-
+    <h1>Group Randomizer</h1>
     <form method="post" action="{{ path('app_group') }}" class="form">
-        <input type="hidden" name="_token" value="{{ csrf_token('randomize') }}">
-        <input type="hidden" name="previous_rounds" id="previous-rounds" value="{{ previousRounds | e('html_attr') }}">
-
-        <fieldset class="pods-fieldset">
-            <legend class="pods-fieldset__legend">Custom pods <span class="pods-fieldset__hint">(optional — pre-assign players before randomizing)</span></legend>
-            <div id="pods-list">
-                {% for pod in customPods %}
-                <div class="pod-entry">
-                    <span class="pod-entry__title">Custom pod {{ loop.index }}</span>
-                    <textarea name="pod_players[]" class="pod-entry__players" rows="4" placeholder="Pre-assigned players (one per line, max 4)">{{ pod.players | join('\n') }}</textarea>
-                    <span class="pod-entry__warning" role="alert" hidden>Maximum {{ maxPlayersPerPod }} players per pod.</span>
-                    <button type="button" class="pod-entry__remove">Remove</button>
-                </div>
-                {% endfor %}
-            </div>
-            <button type="button" id="add-pod" class="btn-add-pod">+ Add a pod</button>
-        </fieldset>
-
-        <label for="players" class="form__label">Remaining players to randomize (one per line)</label>
+        <label for="players" class="form__label">Player names (one per line)</label>
         <textarea id="players" name="players" class="form__textarea" rows="10"
             placeholder="Alice&#10;Bob&#10;Charlie">{{ rawInput }}</textarea>
-
-        <div class="form__actions">
-            <button type="submit" class="form__submit">
-                {% if roundNumber > 0 %}Round {{ roundNumber + 1 }}{% else %}Randomize{% endif %}
-            </button>
-            {% if roundNumber > 0 %}
-            <button type="button" id="clear-history" class="btn-clear-history">
-                Reset rounds ({{ roundNumber }} round{{ roundNumber > 1 ? 's' : '' }})
-            </button>
-            {% endif %}
-        </div>
+        <button type="submit" class="form__submit">Randomize</button>
     </form>
-
     {% if groups is not empty %}
-    <div class="results-layout">
-        <section class="results">
-            <h2>Round {{ roundNumber }} — Tables</h2>
-            <div class="groups">
-                {% for group in groups %}
-                <div class="group">
-                    <h3 class="group__title">{{ group.name }}</h3>
-                    <ul class="group__list">
-                        {% for player in group.players %}<li class="group__player">{{ player }}</li>{% endfor %}
-                    </ul>
-                </div>
-                {% endfor %}
+    <section class="results">
+        <h2>Groups</h2>
+        <div class="groups">
+            {% for group in groups %}
+            <div class="group">
+                <h3 class="group__title">Group {{ loop.index }}</h3>
+                <ul class="group__list">
+                    {% for player in group %}<li class="group__player">{{ player }}</li>{% endfor %}
+                </ul>
             </div>
-        </section>
-        <section class="player-list">
-            <h2>Players</h2>
-            <div class="player-grid">
-                {% for entry in playerList %}
-                <div class="player-row">
-                    <span class="player-row__name">{{ entry.name }}</span>
-                    <span class="player-row__table">{{ entry.table }}</span>
-                </div>
-                {% endfor %}
-            </div>
-        </section>
-    </div>
+            {% endfor %}
+        </div>
+    </section>
     {% endif %}
 </main>
-
-<template id="pod-template">
-    <div class="pod-entry">
-        <span class="pod-entry__title"></span>
-        <textarea name="pod_players[]" class="pod-entry__players" rows="4" placeholder="Pre-assigned players (one per line, max 4)"></textarea>
-        <span class="pod-entry__warning" role="alert" hidden>Maximum {{ maxPlayersPerPod }} players per pod.</span>
-        <button type="button" class="pod-entry__remove">Remove</button>
-    </div>
-</template>
-
-<script>
-    function reindexPods() {
-        document.querySelectorAll('#pods-list .pod-entry__title').forEach((el, i) => {
-            el.textContent = 'Custom pod ' + (i + 1);
-        });
-    }
-
-    document.getElementById('add-pod').addEventListener('click', () => {
-        const tpl = document.getElementById('pod-template').content.cloneNode(true);
-        document.getElementById('pods-list').appendChild(tpl);
-        reindexPods();
-    });
-
-    document.getElementById('pods-list').addEventListener('click', (e) => {
-        if (e.target.classList.contains('pod-entry__remove')) {
-            e.target.closest('.pod-entry').remove();
-            reindexPods();
-        }
-    });
-
-    const MAX_PLAYERS_PER_POD = {{ maxPlayersPerPod }};
-
-    document.getElementById('pods-list').addEventListener('input', (e) => {
-        if (!e.target.classList.contains('pod-entry__players')) return;
-        const count = e.target.value.split('\n').filter(l => l.trim() !== '').length;
-        e.target.nextElementSibling.hidden = count <= MAX_PLAYERS_PER_POD;
-    });
-
-    document.querySelector('.form').addEventListener('submit', (e) => {
-        const invalid = [...document.querySelectorAll('.pod-entry__players')]
-            .some(ta => ta.value.split('\n').filter(l => l.trim() !== '').length > MAX_PLAYERS_PER_POD);
-        if (invalid) e.preventDefault();
-    });
-
-    const clearHistoryBtn = document.getElementById('clear-history');
-    if (clearHistoryBtn) {
-        clearHistoryBtn.addEventListener('click', () => {
-            if (!confirm('Are you sure you want to reset all rounds? This cannot be undone.')) return;
-            document.getElementById('previous-rounds').value =
-                JSON.stringify({ roundNumber: 0, rounds: [] });
-            document.querySelector('.form__submit').textContent = 'Randomize';
-            const resultsLayout = document.querySelector('.results-layout');
-            if (resultsLayout) resultsLayout.remove();
-            clearHistoryBtn.remove();
-        });
-    }
-</script>
 {% endblock %}
