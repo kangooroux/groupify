@@ -1,5 +1,0 @@
-.git
-.env.local
-.env.*.local
-var/
-node_modules/
