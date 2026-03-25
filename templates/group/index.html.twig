@@ -11,14 +11,15 @@
 
     <form method="post" action="{{ path('app_group') }}" class="form">
         <input type="hidden" name="_token" value="{{ csrf_token('randomize') }}">
+        <input type="hidden" name="previous_rounds" id="previous-rounds" value="{{ previousRounds | e('html_attr') }}">
 
         <fieldset class="pods-fieldset">
             <legend class="pods-fieldset__legend">Custom pods <span class="pods-fieldset__hint">(optional — pre-assign players before randomizing)</span></legend>
-            <div id="pods-list" data-max-players="{{ maxPlayersPerPod }}">
+            <div id="pods-list">
                 {% for pod in customPods %}
                 <div class="pod-entry">
                     <span class="pod-entry__title">Custom pod {{ loop.index }}</span>
-                    <textarea name="pod_players[]" class="pod-entry__players" rows="4" placeholder="Pre-assigned players (one per line, max 4)" aria-label="Players for custom pod {{ loop.index }}">{{ pod.players | join('\n') }}</textarea>
+                    <textarea name="pod_players[]" class="pod-entry__players" rows="4" placeholder="Pre-assigned players (one per line, max 4)">{{ pod.players | join('\n') }}</textarea>
                     <span class="pod-entry__warning" role="alert" hidden>Maximum {{ maxPlayersPerPod }} players per pod.</span>
                     <button type="button" class="pod-entry__remove">Remove</button>
                 </div>
@@ -36,12 +37,9 @@
                 {% if roundNumber > 0 %}Round {{ roundNumber + 1 }}{% else %}Randomize{% endif %}
             </button>
             {% if roundNumber > 0 %}
-            <form method="post" action="{{ path('app_clear_history') }}" id="clear-history-form">
-                <input type="hidden" name="_token" value="{{ csrf_token('clear_history') }}">
-                <button type="submit" class="btn-clear-history">
-                    Reset rounds ({{ roundNumber }} round{{ roundNumber > 1 ? 's' : '' }})
-                </button>
-            </form>
+            <button type="button" id="clear-history" class="btn-clear-history">
+                Reset rounds ({{ roundNumber }} round{{ roundNumber > 1 ? 's' : '' }})
+            </button>
             {% endif %}
         </div>
     </form>
@@ -79,11 +77,57 @@
 <template id="pod-template">
     <div class="pod-entry">
         <span class="pod-entry__title"></span>
-        <textarea name="pod_players[]" class="pod-entry__players" rows="4" placeholder="Pre-assigned players (one per line, max 4)" aria-label="Players for custom pod"></textarea>
+        <textarea name="pod_players[]" class="pod-entry__players" rows="4" placeholder="Pre-assigned players (one per line, max 4)"></textarea>
         <span class="pod-entry__warning" role="alert" hidden>Maximum {{ maxPlayersPerPod }} players per pod.</span>
         <button type="button" class="pod-entry__remove">Remove</button>
     </div>
 </template>
 
-<script src="{{ asset('js/app.js') }}" defer></script>
+<script>
+    function reindexPods() {
+        document.querySelectorAll('#pods-list .pod-entry__title').forEach((el, i) => {
+            el.textContent = 'Custom pod ' + (i + 1);
+        });
+    }
+
+    document.getElementById('add-pod').addEventListener('click', () => {
+        const tpl = document.getElementById('pod-template').content.cloneNode(true);
+        document.getElementById('pods-list').appendChild(tpl);
+        reindexPods();
+    });
+
+    document.getElementById('pods-list').addEventListener('click', (e) => {
+        if (e.target.classList.contains('pod-entry__remove')) {
+            e.target.closest('.pod-entry').remove();
+            reindexPods();
+        }
+    });
+
+    const MAX_PLAYERS_PER_POD = {{ maxPlayersPerPod }};
+
+    document.getElementById('pods-list').addEventListener('input', (e) => {
+        if (!e.target.classList.contains('pod-entry__players')) return;
+        const count = e.target.value.split('\n').filter(l => l.trim() !== '').length;
+        e.target.nextElementSibling.hidden = count <= MAX_PLAYERS_PER_POD;
+    });
+
+    document.querySelector('.form').addEventListener('submit', (e) => {
+        const invalid = [...document.querySelectorAll('.pod-entry__players')]
+            .some(ta => ta.value.split('\n').filter(l => l.trim() !== '').length > MAX_PLAYERS_PER_POD);
+        if (invalid) e.preventDefault();
+    });
+
+    const clearHistoryBtn = document.getElementById('clear-history');
+    if (clearHistoryBtn) {
+        clearHistoryBtn.addEventListener('click', () => {
+            if (!confirm('Are you sure you want to reset all rounds? This cannot be undone.')) return;
+            document.getElementById('previous-rounds').value =
+                JSON.stringify({ roundNumber: 0, rounds: [] });
+            document.querySelector('.form__submit').textContent = 'Randomize';
+            const resultsLayout = document.querySelector('.results-layout');
+            if (resultsLayout) resultsLayout.remove();
+            clearHistoryBtn.remove();
+        });
+    }
+</script>
 {% endblock %}
