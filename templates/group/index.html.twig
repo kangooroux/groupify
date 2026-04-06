@@ -1,28 +1,95 @@
 {% extends 'base.html.twig' %}
-{% block title %}Group Randomizer{% endblock %}
+{% block title %}Table Randomizer{% endblock %}
 {% block body %}
 <main class="container">
-    <h1>Group Randomizer</h1>
+    <h1>Table Randomizer</h1>
+
     <form method="post" action="{{ path('app_group') }}" class="form">
-        <label for="players" class="form__label">Player names (one per line)</label>
+        <input type="hidden" name="action" value="{{ round == 0 ? 'randomize' : 'next_round' }}">
+
+        <div class="form__label">Custom tables <span class="form__hint">(optional — one player per line, max 4)</span></div>
+        <div id="custom-pods" class="custom-pods">
+            <div class="custom-pod">
+                <textarea name="custom_pod[]" class="form__textarea custom-pod__textarea" rows="4" placeholder="Alice&#10;Bob&#10;Charlie&#10;Dave"></textarea>
+                <button type="button" class="custom-pod__remove" aria-label="Remove table">✕</button>
+            </div>
+        </div>
+        <button type="button" id="add-pod" class="form__add">+ Add custom table</button>
+
+        <label for="players" class="form__label">Remaining players <span class="form__hint">(one per line — will be randomized into tables)</span></label>
         <textarea id="players" name="players" class="form__textarea" rows="10"
-            placeholder="Alice&#10;Bob&#10;Charlie">{{ rawInput }}</textarea>
-        <button type="submit" class="form__submit">Randomize</button>
+            placeholder="Frank&#10;Grace&#10;Henry">{{ rawInput }}</textarea>
+
+        <div class="form__actions">
+            <button type="submit" class="form__submit">{{ round == 0 ? 'Randomize' : 'Next Round' }}</button>
+            {% if round > 0 %}
+            <button type="submit" name="action" value="reset" class="form__reset">Reset</button>
+            {% endif %}
+        </div>
     </form>
+
     {% if groups is not empty %}
     <section class="results">
-        <h2>Groups</h2>
-        <div class="groups">
-            {% for group in groups %}
-            <div class="group">
-                <h3 class="group__title">Group {{ loop.index }}</h3>
-                <ul class="group__list">
-                    {% for player in group %}<li class="group__player">{{ player }}</li>{% endfor %}
-                </ul>
+        <div class="results__header">
+            <h2>Round {{ round }} — Tables</h2>
+            <a href="{{ path('app_group_print') }}" target="_blank" class="results__print">Print</a>
+        </div>
+        <div class="results__layout">
+            <div class="groups">
+                {% for group in groups %}
+                <div class="group">
+                    <h3 class="group__title">Table {{ loop.index }}</h3>
+                    <ul class="group__list">
+                        {% for player in group %}
+                        <li class="group__player">{{ player }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+            <div class="roster">
+                {% set names = playerTable|keys %}
+                {% set half = (names|length / 2)|round(0, 'ceil') %}
+                <div class="roster__columns">
+                    <ul class="roster__list">
+                        {% for name in names|slice(0, half) %}
+                        <li class="roster__item">
+                            <span class="roster__name">{{ name }}</span>
+                            <span class="roster__table">Table {{ playerTable[name] }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="roster__list">
+                        {% for name in names|slice(half) %}
+                        <li class="roster__item">
+                            <span class="roster__name">{{ name }}</span>
+                            <span class="roster__table">Table {{ playerTable[name] }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
     </section>
     {% endif %}
 </main>
+<script>
+const list = document.getElementById('custom-pods');
+const addBtn = document.getElementById('add-pod');
+
+addBtn.addEventListener('click', () => {
+    const row = document.createElement('div');
+    row.className = 'custom-pod';
+    row.innerHTML = '<textarea name="custom_pod[]" class="form__textarea custom-pod__textarea" rows="4" placeholder="Alice\nBob\nCharlie\nDave"></textarea><button type="button" class="custom-pod__remove" aria-label="Remove table">✕</button>';
+    list.appendChild(row);
+});
+
+list.addEventListener('click', e => {
+    if (e.target.classList.contains('custom-pod__remove')) {
+        const rows = list.querySelectorAll('.custom-pod');
+        if (rows.length > 1) e.target.closest('.custom-pod').remove();
+        else e.target.closest('.custom-pod').querySelector('textarea').value = '';
+    }
+});
+</script>
 {% endblock %}

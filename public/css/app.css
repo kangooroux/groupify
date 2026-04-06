@@ -4,22 +4,45 @@ body { font-family: system-ui, sans-serif; background: #f5f5f5; color: #1a1a1a; 
 h1 { font-size: 1.75rem; margin-bottom: 1.5rem; }
 .form { display: flex; flex-direction: column; gap: 0.75rem; }
 .form__label { font-weight: 600; font-size: 0.9rem; }
+.form__hint { font-weight: 400; color: #666; }
 .form__textarea { width: 100%; padding: 0.625rem; font-family: inherit; font-size: 1rem; border: 1px solid #ccc; border-radius: 0.375rem; resize: vertical; }
-.form__submit { align-self: flex-start; padding: 0.625rem 1.5rem; background: #2563eb; color: #fff; border: none; border-radius: 0.375rem; font-size: 1rem; cursor: pointer; }
+.form__input { width: 100%; padding: 0.625rem; font-family: inherit; font-size: 1rem; border: 1px solid #ccc; border-radius: 0.375rem; }
+.form__submit { padding: 0.625rem 1.5rem; background: #2563eb; color: #fff; border: none; border-radius: 0.375rem; font-size: 1rem; cursor: pointer; }
 .form__submit:hover { background: #1d4ed8; }
+.form__reset { padding: 0.625rem 1.5rem; background: none; color: #666; border: 1px solid #ccc; border-radius: 0.375rem; font-size: 1rem; cursor: pointer; }
+.form__reset:hover { border-color: #ef4444; color: #ef4444; }
+.form__actions { display: flex; gap: 0.75rem; align-items: center; }
+.form__add { padding: 0.375rem 1rem; background: none; color: #2563eb; border: 1px solid #2563eb; border-radius: 0.375rem; font-size: 0.9rem; cursor: pointer; }
+.form__add:hover { background: #eff6ff; }
+.custom-pods { display: flex; flex-direction: column; gap: 0.5rem; }
+.custom-pod { display: flex; gap: 0.5rem; align-items: flex-start; }
+.custom-pod__textarea { flex: 1; resize: none; }
+.custom-pod__remove { flex-shrink: 0; width: 2rem; height: 2rem; background: none; border: 1px solid #ccc; border-radius: 0.375rem; cursor: pointer; color: #666; font-size: 0.85rem; }
+.custom-pod__remove:hover { border-color: #ef4444; color: #ef4444; }
 .results { margin-top: 2rem; }
-.results h2 { font-size: 1.25rem; margin-bottom: 1rem; }
-.groups { display: flex; flex-direction: column; gap: 1rem; }
+.results__header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+.results__header h2 { font-size: 1.25rem; margin: 0; }
+.results__print { padding: 0.25rem 0.75rem; font-size: 0.85rem; color: #2563eb; border: 1px solid #2563eb; border-radius: 0.375rem; text-decoration: none; transition: background 0.15s, color 0.15s; }
+.results__print:hover { background: #2563eb; color: #fff; }
+.results__layout { display: flex; gap: 1.5rem; align-items: flex-start; }
+.groups { flex: 1; display: flex; flex-direction: column; gap: 1rem; }
 .group { background: #fff; border: 1px solid #e5e5e5; border-radius: 0.5rem; padding: 1rem; }
 .group__title { font-size: 1rem; margin: 0 0 0.5rem; color: #2563eb; }
 .group__list { margin: 0; padding-left: 1.25rem; }
 .group__player { padding: 0.125rem 0; }
+.roster { flex: 0 0 50%; }
+.roster__columns { display: flex; gap: 1rem; }
+.roster__list { flex: 1; margin: 0; padding: 0; list-style: none; background: #fff; border: 1px solid #e5e5e5; border-radius: 0.5rem; padding: 0.5rem 1rem; }
+.roster__item { display: flex; justify-content: space-between; gap: 0.5rem; padding: 0.25rem 0; border-bottom: 1px solid #f0f0f0; }
+.roster__item:last-child { border-bottom: none; }
+.roster__name { min-width: 0; }
+.roster__table { white-space: nowrap; flex-shrink: 0; color: #2563eb; font-weight: 600; }
+.roster__item:last-child { border-bottom: none; }
 @media (min-width: 36rem) {
     body { padding: 2rem; }
-    .groups { flex-direction: row; flex-wrap: wrap; }
-    .group { flex: 1 1 calc(50% - 0.5rem); }
 }
 @media (min-width: 60rem) {
-    .container { max-width: 56rem; }
-    .group { flex: 1 1 calc(25% - 0.75rem); }
+    .container { max-width: 72rem; }
+    .groups { flex-direction: row; flex-wrap: wrap; }
+    .group { flex: 0 1 calc(50% - 0.5rem); }
 }
