@@ -19,6 +19,7 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction \
     && chmod +x docker/entrypoint.sh \
     && cp docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf \
     && cp docker/nginx/prod.conf.template /etc/nginx/http.d/default.conf.template \
+    && mkdir -p /etc/supervisor/conf.d \
     && cp docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 EXPOSE 8080
