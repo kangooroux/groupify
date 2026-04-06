@@ -1,0 +1,7 @@
+.git
+.env.local
+.env.*.local
+var/cache
+var/log
+docker-compose.yml
+docker-compose.*.yml
