@@ -4,24 +4,28 @@
 <main class="container">
     <h1>Table Randomizer</h1>
 
+    {% for message in app.flashes('warning') %}
+    <p class="flash flash--warning" role="alert">{{ message }}</p>
+    {% endfor %}
+
     <form method="post" action="{{ path('app_group') }}" class="form">
-        <input type="hidden" name="action" value="{{ round == 0 ? 'randomize' : 'next_round' }}">
+        <input type="hidden" name="_token" value="{{ csrfToken }}">
 
         <div class="form__label">Custom tables <span class="form__hint">(optional — one player per line, max 4)</span></div>
         <div id="custom-pods" class="custom-pods">
             <div class="custom-pod">
-                <textarea name="custom_pod[]" class="form__textarea custom-pod__textarea" rows="4" placeholder="Alice&#10;Bob&#10;Charlie&#10;Dave"></textarea>
+                <textarea name="custom_pod[]" class="form__textarea custom-pod__textarea" rows="4" maxlength="500" aria-label="Custom table players" placeholder="Alice&#10;Bob&#10;Charlie&#10;Dave"></textarea>
                 <button type="button" class="custom-pod__remove" aria-label="Remove table">✕</button>
             </div>
         </div>
         <button type="button" id="add-pod" class="form__add">+ Add custom table</button>
 
         <label for="players" class="form__label">Remaining players <span class="form__hint">(one per line — will be randomized into tables)</span></label>
-        <textarea id="players" name="players" class="form__textarea" rows="10"
+        <textarea id="players" name="players" class="form__textarea" rows="10" maxlength="4000"
             placeholder="Frank&#10;Grace&#10;Henry">{{ rawInput }}</textarea>
 
         <div class="form__actions">
-            <button type="submit" class="form__submit">{{ round == 0 ? 'Randomize' : 'Next Round' }}</button>
+            <button type="submit" name="action" value="{{ round == 0 ? 'randomize' : 'next_round' }}" class="form__submit">{{ round == 0 ? 'Randomize' : 'Next Round' }}</button>
             {% if round > 0 %}
             <button type="submit" name="action" value="reset" class="form__reset">Reset</button>
             {% endif %}
@@ -32,7 +36,7 @@
     <section class="results">
         <div class="results__header">
             <h2>Round {{ round }} — Tables</h2>
-            <a href="{{ path('app_group_print') }}" target="_blank" class="results__print">Print</a>
+            <a href="{{ path('app_group_print') }}" target="_blank" rel="noopener noreferrer" class="results__print">Print</a>
         </div>
         <div class="results__layout">
             <div class="groups">
@@ -48,6 +52,7 @@
                 {% endfor %}
             </div>
             <div class="roster">
+                <h3 class="roster__heading">Players</h3>
                 {% set names = playerTable|keys %}
                 {% set half = (names|length / 2)|round(0, 'ceil') %}
                 <div class="roster__columns">
@@ -73,23 +78,5 @@
     </section>
     {% endif %}
 </main>
-<script>
-const list = document.getElementById('custom-pods');
-const addBtn = document.getElementById('add-pod');
-
-addBtn.addEventListener('click', () => {
-    const row = document.createElement('div');
-    row.className = 'custom-pod';
-    row.innerHTML = '<textarea name="custom_pod[]" class="form__textarea custom-pod__textarea" rows="4" placeholder="Alice\nBob\nCharlie\nDave"></textarea><button type="button" class="custom-pod__remove" aria-label="Remove table">✕</button>';
-    list.appendChild(row);
-});
-
-list.addEventListener('click', e => {
-    if (e.target.classList.contains('custom-pod__remove')) {
-        const rows = list.querySelectorAll('.custom-pod');
-        if (rows.length > 1) e.target.closest('.custom-pod').remove();
-        else e.target.closest('.custom-pod').querySelector('textarea').value = '';
-    }
-});
-</script>
+<script src="{{ asset('js/app.js') }}" type="module"></script>
 {% endblock %}

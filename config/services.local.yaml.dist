@@ -1,0 +1,12 @@
+# Copy this file to config/services.local.yaml (gitignored) and fill in real values.
+parameters:
+    # Pairs that must always be seated together. Each entry is a list of two player names.
+    app.forced_pairs:
+        - ['Player One', 'Player Two']
+
+    # Name aliases: map lowercase variants/reversed names to the canonical form.
+    app.name_aliases:
+        'one player':  'Player One'
+        'player one':  'Player One'
+        'two player':  'Player Two'
+        'player two':  'Player Two'
