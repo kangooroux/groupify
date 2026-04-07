@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4a760c73-7e9e-429a-82dc-7c3a6284408b" name="Changes" comment="Feat" />
+    <list default="true" id="4a760c73-7e9e-429a-82dc-7c3a6284408b" name="Changes" comment="Feat: Enhanced the concept.&#10;&#10;&gt;Custom tables then completes the tables.&#10;&gt;Multiples rounds, different players encountered&#10;&gt;Print button A4 format friendly">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -92,6 +94,9 @@
       <path value="$PROJECT_DIR$/vendor/symfony/options-resolver" />
     </include_path>
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -100,19 +105,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "//wsl.localhost/Ubuntu/home/kangoo/Ephemere",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;//wsl.localhost/Ubuntu/home/kangoo/Ephemere&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -133,6 +138,7 @@
       <workItem from="1774263706226" duration="4280000" />
       <workItem from="1774290405815" duration="2254000" />
       <workItem from="1774520319700" duration="586000" />
+      <workItem from="1775561993162" duration="1065000" />
     </task>
     <task id="LOCAL-00001" summary="Feat">
       <option name="closed" value="true" />
@@ -158,7 +164,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774520380232</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Feat: Enhanced the concept.&#10;&#10;&gt;Custom tables then completes the tables.&#10;&gt;Multiples rounds, different players encountered&#10;&gt;Print button A4 format friendly">
+      <option name="closed" value="true" />
+      <created>1775562306867</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1775562306867</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -177,6 +191,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Feat" />
-    <option name="LAST_COMMIT_MESSAGE" value="Feat" />
+    <MESSAGE value="Feat: Enhanced the concept.&#10;&#10;&gt;Custom tables then completes the tables.&#10;&gt;Multiples rounds, different players encountered&#10;&gt;Print button A4 format friendly" />
+    <option name="LAST_COMMIT_MESSAGE" value="Feat: Enhanced the concept.&#10;&#10;&gt;Custom tables then completes the tables.&#10;&gt;Multiples rounds, different players encountered&#10;&gt;Print button A4 format friendly" />
   </component>
 </project>
