@@ -227,13 +227,26 @@ class GroupingService
     /** @param array<string> $pool Already shuffled remaining players */
     private function assembleGroups(array $fixedPods, array $pool, array $forcedPairs = []): array
     {
+        // Pre-reserve forced pair members so fixed pod filling cannot consume them.
+        $reservedNames = [];
+        foreach ($forcedPairs as $pair) {
+            foreach ($pair as $p) {
+                if ($p !== '') {
+                    $reservedNames[$p] = true;
+                }
+            }
+        }
+        $reserved = array_values(array_filter($pool, fn(string $p) => isset($reservedNames[$p])));
+        $pool     = array_values(array_filter($pool, fn(string $p) => !isset($reservedNames[$p])));
+
         $customGroups = [];
         foreach ($fixedPods as $pod) {
             $fill           = array_splice($pool, 0, max(0, self::MAX_TABLE_SIZE - count($pod)));
             $customGroups[] = array_merge($pod, $fill);
         }
 
-        $poolIndex    = array_flip($pool);
+        $pool      = array_merge($pool, $reserved);
+        $poolIndex = array_flip($pool);
         $seededGroups = [];
         foreach ($forcedPairs as $pair) {
             $present = array_values(array_filter($pair, fn(string $p) => isset($poolIndex[$p])));
