@@ -6,10 +6,6 @@
 
 # Player-specific data lives in config/services.local.yaml (gitignored).
 # Copy config/services.local.yaml.dist to config/services.local.yaml and fill in real values.
-parameters:
-    app.forced_pairs: '%env(json:APP_FORCED_PAIRS)%'
-    app.name_aliases: '%env(json:APP_NAME_ALIASES)%'
-
 imports:
     - { resource: 'services.local.yaml', ignore_errors: not_found }
 

@@ -16,15 +16,63 @@ class GroupingService
     /** @var array<string> */
     private array $warnings = [];
 
+    /** @var array<array<string>> */
+    private readonly array $forcedPairs;
+
+    /** @var array<string, string> */
+    private readonly array $nameAliases;
+
     public function getWarnings(): array
     {
         return $this->warnings;
     }
 
+    /**
+     * Env var formats (set in Railway Variables or .env.local):
+     *   APP_FORCED_PAIRS  – pipe-separated names per pair, semicolons between pairs
+     *                       e.g. "Alice|Bob;Carol|Dave"
+     *   APP_NAME_ALIASES  – pipe-separated key=value entries
+     *                       e.g. "alice smith=Alice Smith|smith alice=Alice Smith"
+     */
     public function __construct(
-        #[Autowire('%app.forced_pairs%')] private readonly array $forcedPairs,
-        #[Autowire('%app.name_aliases%')] private readonly array $nameAliases,
-    ) {}
+        #[Autowire(env: 'APP_FORCED_PAIRS')] string $forcedPairsRaw = '',
+        #[Autowire(env: 'APP_NAME_ALIASES')] string $nameAliasesRaw = '',
+    ) {
+        $this->forcedPairs = $this->parseForcedPairs($forcedPairsRaw);
+        $this->nameAliases = $this->parseNameAliases($nameAliasesRaw);
+    }
+
+    /** @return array<array<string>> */
+    private function parseForcedPairs(string $raw): array
+    {
+        if (trim($raw) === '') {
+            return [];
+        }
+        $pairs = [];
+        foreach (explode(';', $raw) as $pairStr) {
+            $names = array_values(array_filter(array_map('trim', explode('|', $pairStr))));
+            if (count($names) >= 2) {
+                $pairs[] = $names;
+            }
+        }
+        return $pairs;
+    }
+
+    /** @return array<string, string> */
+    private function parseNameAliases(string $raw): array
+    {
+        if (trim($raw) === '') {
+            return [];
+        }
+        $aliases = [];
+        foreach (explode('|', $raw) as $entry) {
+            $parts = explode('=', $entry, 2);
+            if (count($parts) === 2) {
+                $aliases[trim($parts[0])] = trim($parts[1]);
+            }
+        }
+        return $aliases;
+    }
 
     /** @return array<array<string>> */
     public function buildFirstRound(string $rawInput, array $rawFixedPods): array
