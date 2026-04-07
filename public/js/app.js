@@ -1,6 +1,22 @@
 const list = document.getElementById('custom-pods');
 const addBtn = document.getElementById('add-pod');
 
+function checkPodSize(textarea) {
+    const count = textarea.value.split('\n').filter(l => l.trim() !== '').length;
+    const pod = textarea.closest('.custom-pod');
+    let warning = pod.querySelector('.custom-pod__warning');
+    if (count > 4) {
+        if (!warning) {
+            warning = document.createElement('p');
+            warning.className = 'custom-pod__warning';
+            warning.textContent = 'Max 4 players per table — extras will be ignored.';
+            pod.appendChild(warning);
+        }
+    } else if (warning) {
+        warning.remove();
+    }
+}
+
 addBtn.addEventListener('click', () => {
     const textarea = document.createElement('textarea');
     textarea.name = 'custom_pod[]';
@@ -28,6 +44,16 @@ list.addEventListener('click', e => {
     if (btn) {
         const rows = list.querySelectorAll('.custom-pod');
         if (rows.length > 1) btn.closest('.custom-pod').remove();
-        else btn.closest('.custom-pod').querySelector('textarea').value = '';
+        else {
+            const ta = btn.closest('.custom-pod').querySelector('textarea');
+            ta.value = '';
+            checkPodSize(ta);
+        }
+    }
+});
+
+list.addEventListener('input', e => {
+    if (e.target.matches('.custom-pod__textarea')) {
+        checkPodSize(e.target);
     }
 });

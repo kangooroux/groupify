@@ -14,7 +14,8 @@ h1 { font-size: 1.75rem; margin-bottom: 1.5rem; }
 .form__add { padding: 0.375rem 1rem; background: none; color: #2563eb; border: 1px solid #2563eb; border-radius: 0.375rem; font-size: 0.9rem; cursor: pointer; }
 .form__add:hover { background: #eff6ff; }
 .custom-pods { display: flex; flex-direction: column; gap: 0.5rem; }
-.custom-pod { display: flex; gap: 0.5rem; align-items: flex-start; }
+.custom-pod { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: flex-start; }
+.custom-pod__warning { flex-basis: 100%; margin: 0; font-size: 0.8rem; color: #854d0e; }
 .custom-pod__textarea { flex: 1; resize: none; }
 .custom-pod__remove { flex-shrink: 0; width: 2rem; height: 2rem; background: none; border: 1px solid #ccc; border-radius: 0.375rem; cursor: pointer; color: #666; font-size: 0.85rem; }
 .custom-pod__remove:hover { border-color: #ef4444; color: #ef4444; }
