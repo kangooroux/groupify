@@ -1,12 +1,11 @@
-# Copy this file to config/services.local.yaml (gitignored) and fill in real values.
-parameters:
-    # Pairs that must always be seated together. Each entry is a list of two player names.
-    app.forced_pairs:
-        - ['Player One', 'Player Two']
-
-    # Name aliases: map lowercase variants/reversed names to the canonical form.
-    app.name_aliases:
-        'one player':  'Player One'
-        'player one':  'Player One'
-        'two player':  'Player Two'
-        'player two':  'Player Two'
+# Local config is now done via .env.local (gitignored).
+# Add the following to your .env.local file:
+#
+# APP_FORCED_PAIRS="Player One|Player Two"
+# APP_NAME_ALIASES="player one=Player One|one player=Player One|player two=Player Two|two player=Player Two"
+#
+# Format:
+#   APP_FORCED_PAIRS  – pipe-separated names per pair, semicolons between pairs
+#                       e.g. "Alice|Bob;Carol|Dave"
+#   APP_NAME_ALIASES  – pipe-separated key=value entries (lowercase key = canonical name)
+#                       e.g. "alice smith=Alice Smith|smith alice=Alice Smith"
