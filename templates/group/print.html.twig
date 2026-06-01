@@ -14,7 +14,7 @@
         <div class="groups">
             {% for group in groups %}
             <div class="group">
-                <h2 class="group__title"><span class="group__badge">{{ loop.index }}</span>Table {{ loop.index }}</h2>
+                <h2 class="group__title"><span class="group__badge" aria-hidden="true">{{ loop.index }}</span>Table {{ loop.index }}</h2>
                 <ul class="group__list">
                     {% for player in group %}
                     <li class="group__player">{{ player }}</li>

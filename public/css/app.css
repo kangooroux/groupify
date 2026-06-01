@@ -28,6 +28,10 @@
     --spacing-2xl: 2rem;
 }
 
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.skip-link { position: absolute; top: -100%; left: var(--spacing-sm); padding: var(--spacing-sm) var(--spacing-lg); background: var(--color-primary); color: var(--color-surface); font-weight: 600; font-size: 0.9rem; text-decoration: none; border-radius: var(--radius-sm); z-index: 100; }
+.skip-link:focus { top: var(--spacing-sm); }
+main:focus { outline: none; }
 *, *::before, *::after { box-sizing: border-box; }
 body { font-family: system-ui, sans-serif; background: var(--color-bg); color: var(--color-text); margin: 0; padding: var(--spacing-lg); }
 .container { max-width: 40rem; margin: 0 auto; }
@@ -79,7 +83,7 @@ h1 { font-size: 1.75rem; margin-bottom: var(--spacing-xl); }
 }
 .validated-pod__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-sm); }
 .validated-pod__title { font-size: 1rem; margin: 0; color: var(--color-primary); }
-.validated-pod__list { margin: 0; padding-left: 1.25rem; }
+.validated-pod__list { margin: 0; padding-left: 1.25rem; min-height: 6rem; }
 .validated-pod__player { padding: 0.125rem 0; }
 .validated-pod__remove { width: 2rem; height: 2rem; background: none; border: 1px solid var(--color-border); border-radius: var(--radius-sm); cursor: pointer; color: var(--color-text-muted); font-size: 0.85rem; }
 .validated-pod__remove:hover { border-color: var(--color-danger); color: var(--color-danger); }
@@ -90,8 +94,8 @@ h1 { font-size: 1.75rem; margin-bottom: var(--spacing-xl); }
 .results__header h2 { font-size: 1.25rem; margin: 0; }
 .results__print { padding: var(--spacing-xs) var(--spacing-md); font-size: 0.85rem; color: var(--color-primary); border: 1px solid var(--color-primary); border-radius: var(--radius-sm); text-decoration: none; transition: background 0.15s, color 0.15s; }
 .results__print:hover { background: var(--color-primary); color: var(--color-surface); }
-.results__layout { display: flex; flex-direction: column; gap: var(--spacing-xl); align-items: flex-start; }
-.groups { flex: 1; display: flex; flex-direction: column; gap: var(--spacing-lg); width: 100%; }
+.results__layout { display: flex; flex-direction: column; gap: var(--spacing-xl); }
+.groups { flex: 1; display: flex; flex-direction: column; gap: var(--spacing-lg); }
 .group { background: var(--color-surface); border: 1px solid var(--color-border-light); border-radius: var(--radius-md); padding: var(--spacing-lg); }
 .group__header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-sm); }
 .group__title { font-size: 1rem; margin: 0; display: flex; align-items: center; gap: var(--spacing-sm); }
@@ -104,7 +108,7 @@ h1 { font-size: 1.75rem; margin-bottom: var(--spacing-xl); }
 .group__count { font-size: 0.8rem; color: var(--color-text-muted); }
 .group__list { margin: 0; padding-left: 1.25rem; }
 .group__player { padding: 0.125rem 0; }
-.roster { background: var(--color-surface); border: 1px solid var(--color-border-light); border-radius: var(--radius-md); padding: var(--spacing-lg); width: 100%; }
+.roster { background: var(--color-surface); border: 1px solid var(--color-border-light); border-radius: var(--radius-md); padding: var(--spacing-lg); }
 .roster__heading { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted); margin: 0 0 var(--spacing-md); }
 .roster__columns { display: flex; gap: var(--spacing-lg); }
 .roster__list { flex: 1; margin: 0; padding: 0; list-style: none; }
@@ -125,8 +129,8 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--color-primary);
     .container { max-width: 72rem; }
     .validated-pods { flex-direction: row; flex-wrap: wrap; }
     .validated-pod { flex: 0 1 calc(33.333% - var(--spacing-sm)); }
-    .results__layout { flex-direction: row; }
-    .roster { flex: 0 0 50%; width: auto; }
+    .results__layout { flex-direction: row; align-items: flex-start; }
+    .roster { flex: 0 0 50%; }
     .groups { flex-direction: row; flex-wrap: wrap; }
     .group { flex: 0 1 calc(50% - 0.5rem); }
 }

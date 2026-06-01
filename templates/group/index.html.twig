@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block title %}Commander pod tables randomizer{% endblock %}
 {% block body %}
-<main class="container">
+<main class="container" id="main-content" tabindex="-1">
     <h1>Commander pod tables randomizer</h1>
 
     {% for message in app.flashes('warning') %}
@@ -32,9 +32,9 @@
     </form>
 
     {% if groups is not empty %}
-    <section class="results">
+    <section class="results" aria-labelledby="results-heading">
         <div class="results__header">
-            <h2>Round {{ round }} — Tables</h2>
+            <h2 id="results-heading">Round {{ round }} — Tables</h2>
             <a href="{{ path('app_group_print') }}" target="_blank" rel="noopener noreferrer" class="results__print">Print</a>
         </div>
         <div class="results__layout">
@@ -42,7 +42,7 @@
                 {% for group in groups %}
                 <div class="group">
                     <div class="group__header">
-                        <h3 class="group__title"><span class="group__badge">{{ loop.index }}</span>Table {{ loop.index }}</h3>
+                        <h3 class="group__title"><span class="group__badge" aria-hidden="true">{{ loop.index }}</span>Table {{ loop.index }}</h3>
                         <span class="group__count">{{ group|length }} players</span>
                     </div>
                     <ul class="group__list">

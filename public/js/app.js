@@ -1,3 +1,14 @@
+const liveRegion = document.getElementById('sr-live');
+const flashes = document.querySelectorAll('[role="alert"]');
+const resultsHeading = document.querySelector('.results__header h2');
+
+if (flashes.length) {
+    const text = Array.from(flashes).map(f => f.textContent.trim()).join('. ');
+    setTimeout(() => { liveRegion.textContent = text; }, 100);
+} else if (resultsHeading) {
+    setTimeout(() => { liveRegion.textContent = resultsHeading.textContent; }, 100);
+}
+
 const validatedList = document.getElementById('validated-pods');
 const addBtn = document.getElementById('add-pod');
 const podInput = document.getElementById('custom-pod-input');
@@ -22,7 +33,7 @@ addBtn.addEventListener('click', () => {
     const removeBtn = document.createElement('button');
     removeBtn.type = 'button';
     removeBtn.className = 'validated-pod__remove';
-    removeBtn.setAttribute('aria-label', 'Remove custom table');
+    removeBtn.setAttribute('aria-label', `Remove Custom Table ${index}`);
     removeBtn.textContent = '✕';
 
     const header = document.createElement('div');
@@ -62,8 +73,9 @@ validatedList.addEventListener('click', e => {
     if (!btn) return;
     if (!confirm('Remove this custom table?')) return;
     btn.closest('.validated-pod').remove();
-    validatedList.querySelectorAll('.validated-pod__title').forEach((t, i) => {
-        t.textContent = `Custom Table ${i + 1}`;
+    validatedList.querySelectorAll('.validated-pod').forEach((pod, i) => {
+        pod.querySelector('.validated-pod__title').textContent = `Custom Table ${i + 1}`;
+        pod.querySelector('.validated-pod__remove').setAttribute('aria-label', `Remove Custom Table ${i + 1}`);
     });
 });
 
