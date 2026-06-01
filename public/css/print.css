@@ -31,7 +31,8 @@ h1 { font-size: 16pt; margin: 0 0 0.75cm; }
     break-inside: avoid;
 }
 
-.group__title { font-size: 10pt; font-weight: 700; margin: 0 0 0.2cm; color: #000; }
+.group__title { font-size: 10pt; font-weight: 700; margin: 0 0 0.2cm; color: #000; display: flex; align-items: center; }
+.group__badge { display: inline-flex; align-items: center; justify-content: center; width: 14pt; height: 14pt; border-radius: 50%; background: #000; color: #fff; font-size: 7pt; font-weight: 700; flex-shrink: 0; margin-right: 0.2cm; }
 
 .group__list { margin: 0; padding-left: 1em; }
 .group__player { padding: 1pt 0; font-size: 10pt; }
