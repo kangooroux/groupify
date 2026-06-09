@@ -18,6 +18,9 @@
     --color-badge-3: #dc2626;
     --color-badge-4: #9333ea;
     --color-badge-5: #d97706;
+    --color-badge-6: #0891b2;
+    --color-badge-7: #db2777;
+    --color-badge-8: #0d9488;
     --radius-sm: 0.375rem;
     --radius-md: 0.5rem;
     --spacing-xs: 0.25rem;
@@ -34,7 +37,9 @@
 main:focus { outline: none; }
 *, *::before, *::after { box-sizing: border-box; }
 body { font-family: system-ui, sans-serif; background: var(--color-bg); color: var(--color-text); margin: 0; padding: var(--spacing-lg); }
+button, input, textarea, select { font: inherit; }
 .container { max-width: 40rem; margin: 0 auto; }
+h1, h2 { text-wrap: balance; }
 h1 { font-size: 1.75rem; margin-bottom: var(--spacing-xl); }
 .form { display: flex; flex-direction: column; gap: var(--spacing-md); }
 .form__label { font-weight: 600; font-size: 0.9rem; }
@@ -53,20 +58,19 @@ h1 { font-size: 1.75rem; margin-bottom: var(--spacing-xl); }
     margin-bottom: var(--spacing-xs);
     padding: 0;
 }
-.form__textarea { width: 100%; padding: 0.625rem; font-family: inherit; font-size: 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); resize: vertical; }
+.form__textarea { width: 100%; padding: 0.625rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); resize: vertical; }
 .form__submit {
     padding: 0.625rem var(--spacing-xl);
     background: var(--color-primary);
     color: var(--color-surface);
     border: none;
     border-radius: var(--radius-sm);
-    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
 }
 .form__submit:hover { background: var(--color-primary-hover); }
 .form__submit:disabled { opacity: 0.6; cursor: not-allowed; }
-.form__reset { padding: 0.625rem var(--spacing-xl); background: none; color: var(--color-text-muted); border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 1rem; cursor: pointer; }
+.form__reset { padding: 0.625rem var(--spacing-xl); background: none; color: var(--color-text-muted); border: 1px solid var(--color-border); border-radius: var(--radius-sm); cursor: pointer; }
 .form__reset:hover { border-color: var(--color-danger); color: var(--color-danger); }
 .form__actions { display: flex; flex-direction: column; gap: var(--spacing-md); }
 .form__actions .form__submit, .form__actions .form__reset { width: 100%; }
@@ -99,12 +103,15 @@ h1 { font-size: 1.75rem; margin-bottom: var(--spacing-xl); }
 .group { background: var(--color-surface); border: 1px solid var(--color-border-light); border-radius: var(--radius-md); padding: var(--spacing-lg); }
 .group__header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-sm); }
 .group__title { font-size: 1rem; margin: 0; display: flex; align-items: center; gap: var(--spacing-sm); }
-.group__badge { display: inline-flex; align-items: center; justify-content: center; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--color-primary); color: var(--color-surface); font-size: 0.75rem; font-weight: 700; flex-shrink: 0; }
-.group:nth-child(1) .group__badge { background: var(--color-badge-1); }
-.group:nth-child(2) .group__badge { background: var(--color-badge-2); }
-.group:nth-child(3) .group__badge { background: var(--color-badge-3); }
-.group:nth-child(4) .group__badge { background: var(--color-badge-4); }
-.group:nth-child(5) .group__badge { background: var(--color-badge-5); }
+.group__badge { display: inline-flex; align-items: center; justify-content: center; width: 1.5rem; aspect-ratio: 1; border-radius: 50%; background: var(--color-primary); color: var(--color-surface); font-size: 0.75rem; font-weight: 700; flex-shrink: 0; }
+.group:nth-child(8n+1) .group__badge { background: var(--color-badge-1); }
+.group:nth-child(8n+2) .group__badge { background: var(--color-badge-2); }
+.group:nth-child(8n+3) .group__badge { background: var(--color-badge-3); }
+.group:nth-child(8n+4) .group__badge { background: var(--color-badge-4); }
+.group:nth-child(8n+5) .group__badge { background: var(--color-badge-5); }
+.group:nth-child(8n+6) .group__badge { background: var(--color-badge-6); }
+.group:nth-child(8n+7) .group__badge { background: var(--color-badge-7); }
+.group:nth-child(8n+8) .group__badge { background: var(--color-badge-8); }
 .group__count { font-size: 0.8rem; color: var(--color-text-muted); }
 .group__list { margin: 0; padding-left: 1.25rem; }
 .group__player { padding: 0.125rem 0; }
