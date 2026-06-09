@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+
+      - name: Validate composer.json
+        run: composer validate --no-check-publish
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Check platform requirements
+        run: composer check-platform-reqs
+
+      - name: Check PHP syntax
+        run: find src -name "*.php" | xargs php -l
+
+      - name: Security audit
+        run: composer audit
+
+      - name: Lint Twig templates
+        run: php bin/console lint:twig templates/
+        env:
+          APP_ENV: test
+
+      - name: Lint YAML config
+        run: php bin/console lint:yaml config/
+        env:
+          APP_ENV: test
+
+      - name: Lint service container
+        run: php bin/console lint:container
+        env:
+          APP_ENV: test
+
+      - name: PHPStan
+        run: vendor/bin/phpstan analyse --no-progress
