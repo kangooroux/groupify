@@ -302,13 +302,13 @@ class GroupingService
                 foreach ($present as $p) {
                     unset($poolIndex[$p]);
                 }
-                $pool = array_values(array_keys($poolIndex));
+                $pool = array_keys($poolIndex);
                 $fill = array_splice($pool, 0, max(0, self::MAX_TABLE_SIZE - count($present)));
                 $poolIndex      = array_flip($pool);
                 $seededGroups[] = array_merge($present, $fill);
             }
         }
-        $pool = array_values(array_keys($poolIndex));
+        $pool = array_keys($poolIndex);
 
         $randomGroups = [];
         $n            = count($pool);

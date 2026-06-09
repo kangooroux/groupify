@@ -18,8 +18,14 @@ jobs:
           php-version: '8.3'
           tools: composer:v2
 
+      - name: Validate composer.json
+        run: composer validate --strict
+
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
+
+      - name: Check platform requirements
+        run: composer check-platform-reqs
 
       - name: Check PHP syntax
         run: find src -name "*.php" | xargs php -l
@@ -41,3 +47,6 @@ jobs:
         run: php bin/console lint:container
         env:
           APP_ENV: test
+
+      - name: PHPStan
+        run: vendor/bin/phpstan analyse --no-progress
