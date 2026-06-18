@@ -92,3 +92,30 @@ submitBtn.closest('form').addEventListener('submit', e => {
         submitBtn.textContent = 'Loading…';
     }
 });
+
+// Theme toggle: default follows the OS (CSS); an explicit choice is stored
+// and reapplied here. No stored value means "follow OS".
+const root = document.documentElement;
+const themeToggle = document.getElementById('theme-toggle');
+const osPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+const stored = localStorage.getItem('theme');
+if (stored === 'light' || stored === 'dark') root.dataset.theme = stored;
+
+const activeTheme = () => root.dataset.theme || (osPrefersDark.matches ? 'dark' : 'light');
+
+const updateToggle = () => {
+    const dark = activeTheme() === 'dark';
+    themeToggle.textContent = dark ? '☀' : '☾';
+    themeToggle.setAttribute('aria-label', `Switch to ${dark ? 'light' : 'dark'} theme`);
+};
+
+themeToggle.addEventListener('click', () => {
+    const next = activeTheme() === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    localStorage.setItem('theme', next);
+    updateToggle();
+});
+
+osPrefersDark.addEventListener('change', () => { if (!root.dataset.theme) updateToggle(); });
+updateToggle();
