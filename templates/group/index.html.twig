@@ -9,20 +9,28 @@
     <p class="flash flash--warning" role="alert">{{ message }}</p>
     {% endfor %}
 
-    <form method="post" action="{{ path('app_group') }}" class="form">
+    <form method="post" action="{{ path('app_group') }}" class="form form--chips" id="pod-form">
         <input type="hidden" name="_token" value="{{ csrfToken }}">
 
         <fieldset class="form__fieldset">
-            <legend class="form__legend">Custom tables <span class="form__hint">(optional — one player per line, max 4)</span></legend>
-            <div id="validated-pods" class="validated-pods"></div>
-            <textarea id="custom-pod-input" class="form__textarea" rows="4" maxlength="500" placeholder="Alice&#10;Bob&#10;Charlie&#10;Dave"></textarea>
-            <p id="pod-warning" class="custom-pod__warning" hidden>Max 4 players per table — extras will be ignored.</p>
-            <button type="button" id="add-pod" class="form__add">+ Add custom table</button>
+            <legend class="form__legend">Custom tables <span class="form__hint">(optional — <span class="form__hint--accent">max 4 players each</span>)</span></legend>
+            <div id="custom-tables" class="custom-tables"></div>
         </fieldset>
+        <button type="button" id="add-table" class="form__add">+ Add custom table</button>
 
-        <label for="players" class="form__label">Remaining players <span class="form__hint">(one per line — will be randomized into tables)</span></label>
-        <textarea id="players" name="players" class="form__textarea" rows="10" maxlength="4000"
-            placeholder="Frank&#10;Grace&#10;Henry">{{ rawInput }}</textarea>
+        <fieldset class="form__fieldset">
+            {% set remainingNames = rawInput|split("\n")|map(name => name|trim)|filter(name => name) %}
+            <div class="rp-head">
+                <label class="form__label">Remaining players <span class="form__hint">(type a name and press Enter, or paste a list)</span></label>
+                <span class="rp-count" id="remaining-count">{{ remainingNames|length }} in pool</span>
+            </div>
+            <div id="remaining-chips" class="chips chips--stack">
+                {% for name in remainingNames %}
+                <span class="chip" data-name="{{ name }}">{{ name }} <button type="button" aria-label="Remove {{ name }}">×</button></span>
+                {% endfor %}
+                <input type="text" class="chips__input" placeholder="Add player…" aria-label="Add remaining player">
+            </div>
+        </fieldset>
 
         <div class="form__actions">
             <button type="submit" name="action" value="{{ round == 0 ? 'randomize' : 'next_round' }}" class="form__submit" id="form-submit">{{ round == 0 ? 'Randomize' : 'Next Round' }}</button>
@@ -35,8 +43,21 @@
     {% if groups is not empty %}
     <section class="results" aria-labelledby="results-heading">
         <div class="results__header">
-            <h2 id="results-heading">Round {{ round }} — Tables</h2>
+            <div>
+                <h2 id="results-heading">Round {{ round }} — Tables</h2>
+                <p class="results__subtitle">{{ "now"|date("l · F j, Y") }} · Commander pods</p>
+            </div>
             <a href="{{ path('app_group_print') }}" target="_blank" rel="noopener noreferrer" class="results__print">Print</a>
+        </div>
+        <div class="summary-stats">
+            <div class="stat">
+                <div class="stat__value">{{ playerTable|length }}</div>
+                <div class="stat__label">Players</div>
+            </div>
+            <div class="stat">
+                <div class="stat__value">{{ groups|length }}</div>
+                <div class="stat__label">Pods</div>
+            </div>
         </div>
         <div class="results__layout">
             <div class="groups">
