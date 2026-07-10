@@ -11,6 +11,8 @@ RUN echo "memory_limit=256M" > /usr/local/etc/php/conf.d/custom.ini \
 
 WORKDIR /var/www/html
 
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 COPY . .
 
 RUN composer install --no-dev --optimize-autoloader --no-interaction \
