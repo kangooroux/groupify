@@ -4,7 +4,6 @@ DC = docker compose
 
 up:
 	$(DC) up --detach --build
-	@echo "\nApp running at http://localhost:$$($(DC) port nginx 80 | cut -d: -f2)\n"
 
 down:
 	$(DC) down
